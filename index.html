@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+  <title>ثبت گارانتی — آذرمهر صنعت</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: #131313;
+      color: #D1D3D4;
+      font-family: 'Vazirmatn', Tahoma, Arial, sans-serif;
+      direction: rtl;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px 16px 48px;
+    }
+
+    .header {
+      text-align: center;
+      margin: 16px 0 20px;
+      width: 100%;
+      max-width: 480px;
+    }
+    .header-title { font-size: 22px; font-weight: 700; color: #D4880E; }
+    .header-sub   { font-size: 13px; color: #666; margin-top: 4px; }
+
+    .card {
+      background: #1C1C1C;
+      border: 1px solid #303030;
+      border-radius: 18px;
+      padding: 24px 22px;
+      width: 100%;
+      max-width: 480px;
+    }
+
+    /* باکس توضیح شرط گارانتی */
+    .condition-box {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      background: #D4880E10;
+      border: 1px solid #D4880E35;
+      border-radius: 12px;
+      padding: 14px 16px;
+      margin-bottom: 24px;
+    }
+    .condition-box .icon { font-size: 22px; line-height: 1; flex-shrink: 0; margin-top: 1px; }
+    .condition-box .text { font-size: 13px; color: #C8960A; line-height: 1.75; }
+    .condition-box .text strong { font-weight: 600; color: #D4880E; }
+
+    /* فیلدها */
+    .field { margin-bottom: 16px; }
+    .field label {
+      display: block;
+      font-size: 13px;
+      color: #888;
+      margin-bottom: 6px;
+      font-weight: 500;
+    }
+    .field input,
+    .field textarea {
+      width: 100%;
+      background: #252525;
+      border: 1.5px solid #303030;
+      border-radius: 10px;
+      padding: 13px 14px;
+      font-size: 15px;
+      color: #D1D3D4;
+      font-family: inherit;
+      direction: rtl;
+      -webkit-appearance: none;
+      transition: border-color 0.2s;
+    }
+    .field input::placeholder,
+    .field textarea::placeholder { color: #484848; }
+    .field input:focus,
+    .field textarea:focus { border-color: #D4880E; outline: none; }
+    .field input.err,
+    .field textarea.err { border-color: #C94B3F; }
+    .field textarea { min-height: 96px; resize: vertical; line-height: 1.65; }
+
+    .errmsg { font-size: 12px; color: #C94B3F; margin-top: 5px; display: none; }
+    .errmsg.show { display: block; }
+
+    /* چک‌باکس تأیید */
+    .confirm-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      margin: 4px 0 20px;
+      cursor: pointer;
+    }
+    .confirm-row input[type=checkbox] {
+      width: 20px; height: 20px;
+      flex-shrink: 0;
+      margin-top: 1px;
+      accent-color: #D4880E;
+      cursor: pointer;
+    }
+    .confirm-row span { font-size: 13px; color: #aaa; line-height: 1.6; }
+    .confirm-row span strong { color: #D4880E; font-weight: 600; }
+
+    .btn {
+      display: block; width: 100%;
+      border: none; border-radius: 12px;
+      padding: 15px; font-size: 16px; font-weight: 600;
+      font-family: inherit; cursor: pointer;
+      transition: opacity 0.2s, transform 0.1s;
+    }
+    .btn:active { transform: scale(0.98); }
+    .btn:disabled { opacity: 0.42; cursor: not-allowed; transform: none; }
+    .btn-primary { background: #D4880E; color: #fff; }
+    .btn-primary:hover:not(:disabled) { opacity: 0.88; }
+
+    /* صفحه موفقیت */
+    .success-icon {
+      width: 72px; height: 72px;
+      border-radius: 50%;
+      background: #8DB33A18;
+      border: 2px solid #8DB33A;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 32px;
+      margin: 0 auto 18px;
+    }
+    .tracking-box {
+      background: #252525;
+      border: 1px solid #303030;
+      border-radius: 12px;
+      padding: 16px;
+      text-align: center;
+      margin: 18px 0;
+    }
+    .tracking-box .t-label { font-size: 12px; color: #666; margin-bottom: 6px; }
+    .tracking-box .t-code  { font-size: 26px; font-weight: 700; color: #D4880E; letter-spacing: 3px; }
+
+    .info-note {
+      background: #252525;
+      border-right: 3px solid #D4880E;
+      border-radius: 8px;
+      padding: 12px 14px;
+      font-size: 13px;
+      color: #777;
+      line-height: 1.75;
+    }
+
+    .page { display: none; }
+    .page.active { display: block; }
+
+    .footer { margin-top: 28px; font-size: 11px; color: #2e2e2e; text-align: center; }
+
+    @media (max-width: 400px) {
+      body { padding: 10px 12px 40px; }
+      .card { padding: 18px 14px; border-radius: 14px; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="header">
+    <div class="header-title">آذرمهر صنعت</div>
+    <div class="header-sub">سامانه ثبت درخواست گارانتی</div>
+  </div>
+
+  <!-- ══════════ صفحه ۱: فرم ══════════ -->
+  <div class="card page active" id="pageForm">
+
+    <!-- شرط گارانتی -->
+    <div class="condition-box">
+      <div class="icon">🛡️</div>
+      <div class="text">
+        اگر روی بسته‌بندی محصول عبارت<br />
+        <strong>«تضمین بازگشت وجه»</strong> درج شده،<br />
+        می‌توانید درخواست گارانتی ثبت کنید.
+      </div>
+    </div>
+
+    <!-- فیلدها -->
+    <div class="field">
+      <label>نام و نام خانوادگی</label>
+      <input type="text" id="fName" placeholder="مثال: علی احمدی" />
+      <div class="errmsg" id="eName">نام را کامل وارد کنید (حداقل ۳ حرف)</div>
+    </div>
+
+    <div class="field">
+      <label>شماره موبایل</label>
+      <input type="tel" id="fMobile" placeholder="09121234567" maxlength="11" inputmode="numeric" />
+      <div class="errmsg" id="eMobile">شماره موبایل باید ۱۱ رقم باشد و با ۰۹ شروع شود</div>
+    </div>
+
+    <div class="field">
+      <label>آدرس</label>
+      <input type="text" id="fAddress" placeholder="استان، شهر، خیابان، پلاک" />
+      <div class="errmsg" id="eAddress">آدرس خود را وارد کنید</div>
+    </div>
+
+    <div class="field">
+      <label>تاریخ خرید</label>
+      <input type="date" id="fDate" />
+      <div class="errmsg" id="eDate">تاریخ خرید را انتخاب کنید</div>
+    </div>
+
+    <div class="field">
+      <label>توضیح مشکل</label>
+      <textarea id="fDesc" placeholder="مشکل محصول را به طور کامل توضیح دهید..."></textarea>
+      <div class="errmsg" id="eDesc">توضیحات را بنویسید (حداقل ۱۰ حرف)</div>
+    </div>
+
+    <!-- تأیید شرط -->
+    <label class="confirm-row" id="confirmRow">
+      <input type="checkbox" id="chkConfirm" />
+      <span>
+        تأیید می‌کنم که روی بسته‌بندی محصولم عبارت
+        <strong>«تضمین بازگشت وجه»</strong>
+        نوشته شده است.
+      </span>
+    </label>
+    <div class="errmsg" id="eConfirm" style="margin-top:-14px; margin-bottom:16px;">
+      لطفاً تأیید کنید که محصول شما دارای تضمین بازگشت وجه است.
+    </div>
+
+    <button class="btn btn-primary" id="btnSubmit" onclick="doSubmit()">
+      ثبت درخواست گارانتی
+    </button>
+  </div>
+
+  <!-- ══════════ صفحه ۲: تأیید ══════════ -->
+  <div class="card page" id="pageDone">
+    <div style="text-align:center;">
+      <div class="success-icon">✓</div>
+      <div style="font-size:20px; font-weight:700; margin-bottom:8px;">درخواست شما ثبت شد</div>
+      <div style="font-size:13px; color:#777; margin-bottom:4px;">
+        کارشناسان ما در اسرع وقت با شما تماس می‌گیرند.
+      </div>
+
+      <div class="tracking-box">
+        <div class="t-label">کد پیگیری شما</div>
+        <div class="t-code" id="tCode">—</div>
+      </div>
+
+      <div class="info-note">
+        این کد را یادداشت یا عکس بگیرید.<br />
+        برای پیگیری وضعیت درخواست به آن نیاز دارید.
+      </div>
+
+      <button class="btn btn-primary" onclick="doReset()" style="margin-top:22px;">
+        ثبت درخواست جدید
+      </button>
+    </div>
+  </div>
+
+  <div class="footer">آذرمهر صنعت — سامانه گارانتی محصول</div>
+
+<script>
+(function () {
+  'use strict';
+
+  var SUPA = 'https://apscmdspkitpwzhizgkq.supabase.co';
+  var AK   = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFwc2NtZHNwa2l0cHd6aGl6Z2txIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE0MDc3NDgsImV4cCI6MjA5Njk4Mzc0OH0.LC_e1vafGe2KtTrWsb0mjIVIrQoqyvA46THD83HkhMo';
+  var H    = {
+    apikey: AK,
+    Authorization: 'Bearer ' + AK,
+    'Content-Type': 'application/json',
+    Accept: 'application/json'
+  };
+
+  /* حداکثر تاریخ = امروز */
+  document.getElementById('fDate').max = new Date().toISOString().split('T')[0];
+
+  function showPage(id) {
+    document.querySelectorAll('.page').forEach(function (p) { p.classList.remove('active'); });
+    document.getElementById(id).classList.add('active');
+    window.scrollTo(0, 0);
+  }
+
+  function fieldErr(inputId, errId, show) {
+    var inp = document.getElementById(inputId);
+    var err = document.getElementById(errId);
+    if (show) { inp.classList.add('err'); err.classList.add('show'); }
+    else       { inp.classList.remove('err'); err.classList.remove('show'); }
+  }
+
+  function clearErrors() {
+    document.querySelectorAll('.errmsg').forEach(function (e) { e.classList.remove('show'); });
+    document.querySelectorAll('input, textarea').forEach(function (e) { e.classList.remove('err'); });
+  }
+
+  window.doSubmit = function () {
+    clearErrors();
+
+    var name    = document.getElementById('fName').value.trim();
+    var mobile  = document.getElementById('fMobile').value.trim();
+    var address = document.getElementById('fAddress').value.trim();
+    var date    = document.getElementById('fDate').value;
+    var desc    = document.getElementById('fDesc').value.trim();
+    var confirm = document.getElementById('chkConfirm').checked;
+
+    var ok = true;
+    if (name.length < 3)           { fieldErr('fName',    'eName',    true); ok = false; }
+    if (!/^09\d{9}$/.test(mobile)) { fieldErr('fMobile',  'eMobile',  true); ok = false; }
+    if (address.length < 5)        { fieldErr('fAddress', 'eAddress', true); ok = false; }
+    if (!date)                     { fieldErr('fDate',    'eDate',    true); ok = false; }
+    if (desc.length < 10)          { fieldErr('fDesc',    'eDesc',    true); ok = false; }
+    if (!confirm) {
+      document.getElementById('eConfirm').classList.add('show');
+      ok = false;
+    }
+    if (!ok) return;
+
+    var btn = document.getElementById('btnSubmit');
+    btn.disabled = true;
+    btn.textContent = 'در حال ثبت...';
+
+    fetch(SUPA + '/rest/v1/warranty_requests', {
+      method: 'POST',
+      headers: Object.assign({}, H, { Prefer: 'return=representation' }),
+      body: JSON.stringify({
+        full_name:     name,
+        mobile:        mobile,
+        address:       address,
+        purchase_date: date,
+        description:   desc,
+        status:        'pending'
+      })
+    })
+    .then(function (r) {
+      if (!r.ok) throw new Error(r.status);
+      return r.json();
+    })
+    .then(function (res) {
+      var id   = Array.isArray(res) ? (res[0] && res[0].id) : res.id;
+      var code = 'GR' + String(id || Date.now()).padStart(6, '0');
+      document.getElementById('tCode').textContent = code;
+      showPage('pageDone');
+    })
+    .catch(function () {
+      btn.disabled = false;
+      btn.textContent = 'ثبت درخواست گارانتی';
+      alert('خطا در ثبت درخواست. لطفاً دوباره امتحان کنید.');
+    });
+  };
+
+  window.doReset = function () {
+    clearErrors();
+    document.getElementById('fName').value    = '';
+    document.getElementById('fMobile').value  = '';
+    document.getElementById('fAddress').value = '';
+    document.getElementById('fDate').value    = '';
+    document.getElementById('fDesc').value    = '';
+    document.getElementById('chkConfirm').checked = false;
+    showPage('pageForm');
+  };
+
+}());
+</script>
+</body>
+</html>
